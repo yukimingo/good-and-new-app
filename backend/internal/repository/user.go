@@ -1,47 +1,49 @@
 package repository
 
 import (
-	"database/sql"
 	"good-and-new/internal/domain"
+	"log"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
 type UserRepositoryInterface interface {
 	FindAll() ([]domain.User, error)
 	FindByEmail(email string) (domain.User, error)
+	Create(user domain.User) error
 }
 
-func NewUserRepository(db *sql.DB) *UserRepository {
+func NewUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
 func (ur *UserRepository) FindAll() ([]domain.User, error) {
 	var users []domain.User
-	rows, err := ur.db.Query("select * from users")
-	if err != nil {
-		return users, err
-	}
 
-	for rows.Next() {
-		var user domain.User
-		if err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.CreatedAt, &user.UpdatedAt); err != nil {
-			return users, err
-		}
+	result := ur.db.Find(&users)
+	log.Println("SQL:", result.Statement.SQL.String())
 
-		users = append(users, user)
-	}
-
-	return users, nil
+	return users, result.Error
 }
 
 func (ur *UserRepository) FindByEmail(email string) (domain.User, error) {
 	var user domain.User
-	if err := ur.db.QueryRow("select * from users where email = ?", email).Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.CreatedAt, &user.UpdatedAt); err != nil {
-		return user, err
+
+	if row := ur.db.Where("email = ?", email).First(&user); row.Error != nil {
+		return user, row.Error
 	}
 
 	return user, nil
+}
+
+func (ur *UserRepository) Create(user domain.User) error {
+	if err := ur.db.Create(&user).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

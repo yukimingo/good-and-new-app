@@ -9,12 +9,15 @@ services:
       DB_USER: user
       DB_PASSWORD: pass
       DB_NAME: mydata
+      DB_PORT: 3306
     volumes:
       - ./backend:/app
     ports:
       - 8082:8080
+    tty: true
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.0
@@ -25,3 +28,7 @@ services:
       MYSQL_PASSWORD: pass
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5

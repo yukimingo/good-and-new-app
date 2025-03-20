@@ -11,6 +11,8 @@ type UserService struct {
 
 type UserServiceInterface interface {
 	FindAll() ([]domain.User, error)
+	FindByEmail(email string) (domain.User, error)
+	Create(user domain.User) error
 }
 
 func NewUserService(ur repository.UserRepositoryInterface) *UserService {
@@ -24,4 +26,21 @@ func (us *UserService) FindAll() ([]domain.User, error) {
 	}
 
 	return users, nil
+}
+
+func (us *UserService) FindByEmail(email string) (domain.User, error) {
+	user, err := us.repository.FindByEmail(email)
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (us *UserService) Create(user domain.User) error {
+	if err := us.repository.Create(user); err != nil {
+		return err
+	}
+
+	return nil
 }

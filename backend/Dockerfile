@@ -10,6 +10,8 @@ COPY ./backend/go.sum .
 
 RUN go mod tidy
 
+COPY ./backend .
+
 RUN go install github.com/air-verse/air@latest
 
 RUN go install golang.org/x/tools/gopls@latest
@@ -26,5 +28,7 @@ RUN go install github.com/golang/mock/mockgen@latest
 
 RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-# CMD [ "/bin/bash" ]
-CMD [ "air" ]
+# CMD [ "go", "run", "cmd/main.go" ]
+CMD [ "/bin/bash" ]
+# CMD [ "air" ]
+# CMD ["air", "-c", ".air.toml"]

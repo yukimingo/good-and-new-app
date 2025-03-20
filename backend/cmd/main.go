@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"good-and-new/internal/controller"
 	"good-and-new/internal/db"
 	"good-and-new/internal/repository"
@@ -22,20 +23,19 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/test", func(c *fiber.Ctx) error {
-		return c.Status(http.StatusOK).JSON(fiber.Map{"msg": "test"})
+		var routes []fiber.Route
+		for _, route := range app.GetRoutes(false) {
+			fmt.Println(route)
+			routes = append(routes, route)
+		}
+		return c.Status(http.StatusOK).JSON(fiber.Map{"routes": routes})
 	})
 
 	app.Get("/user", userController.FindAll)
 
-	app.Get("/users/:email", func(c *fiber.Ctx) error {
-		email := c.Params("email")
-		user, err := userRepository.FindByEmail(email)
-		if err != nil {
-			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err})
-		}
+	app.Get("/user/:email", userController.FindByEmail)
 
-		return c.Status(http.StatusOK).JSON(fiber.Map{"user": user})
-	})
+	app.Post("/user", userController.Create)
 
 	if err := app.Listen(":8080"); err != nil {
 		log.Fatal(err)

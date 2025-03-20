@@ -1,0 +1,5 @@
+# `.air.toml` の内容
+root = "."  # ルートディレクトリを `/app` に設定
+
+[build]
+cmd = "go run cmd/main.go"
