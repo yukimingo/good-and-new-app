@@ -21,3 +21,6 @@ db:
 
 migrate:
 	migrate -path ${MIGRATION_PATH} -database ${DB_URL} up
+
+go:
+	docker exec -it good-and-new-backend-1 sh -c "cd /app && go run cmd/main.go"

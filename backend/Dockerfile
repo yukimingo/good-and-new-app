@@ -26,5 +26,5 @@ RUN go install github.com/golang/mock/mockgen@latest
 
 RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-# CMD [ "/bin/bash" ]
-CMD [ "air" ]
+CMD [ "/bin/bash" ]
+# CMD [ "air" ]
