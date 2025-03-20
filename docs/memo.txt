@@ -1,0 +1,4 @@
+migrate -path ./migrations -database "mysql://user:pass@tcp(db:3306)/mydata?charset=utf8mb4&pars
+eTime=True&loc=Local" up
+
+ migrate create -ext sql -dir migrations -seq create_users_table
