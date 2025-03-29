@@ -27,7 +27,7 @@ func main() {
 
 	app.Get("/user", userController.FindAll)
 
-	app.Get("/users/:email", func(c *fiber.Ctx) error {
+	app.Get("/user/:email", func(c *fiber.Ctx) error {
 		email := c.Params("email")
 		user, err := userRepository.FindByEmail(email)
 		if err != nil {
