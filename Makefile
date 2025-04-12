@@ -1,6 +1,9 @@
 MIGRATION_PATH = ./backend/migrations
 DB_URL = "mysql://user:pass@tcp(db:3306)/mydata?charset=utf8mb4&parseTime=True&loc=Local"
 
+help:
+	cat Makefile
+
 up:
 	docker compose up -d
 
@@ -19,8 +22,11 @@ back:
 db:
 	docker container exec -it good-and-new-db-1 bash
 
+dbd:
+	docker compose exec db mysql -u user -p mydata
+
 migrate:
-	migrate -path ${MIGRATION_PATH} -database ${DB_URL} up
+	docker compose exec backend migrate -path ./migrations -database "mysql://user:pass@tcp(db:3306)/mydata?charset=utf8mb4&parseTime=True&loc=Local" up
 
 go:
-	docker exec -it good-and-new-backend-1 sh -c "cd /app && go run cmd/main.go"
+	docker compose exec backend go run cmd/main.go
