@@ -1,0 +1,1 @@
+create table talk_topics (ID int primary key auto_increment, category_id int, title varchar(256) not null, content text not null, created_at datetime not null, updated_at datetime not null);

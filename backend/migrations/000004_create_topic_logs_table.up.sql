@@ -1,0 +1,1 @@
+create table topic_logs (ID int primary key auto_increment, topic_id int not null, person_name varchar(256) not null, talked_at datetime not null, created_at datetime not null, updated_at datetime not null);
