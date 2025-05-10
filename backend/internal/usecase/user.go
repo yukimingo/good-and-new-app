@@ -11,6 +11,8 @@ type UserUsecase struct {
 
 type UserUsecaseInterface interface {
 	FindAll() ([]domain.User, error)
+	FindByEmail(email string) (domain.User, error)
+	Create(user domain.User) (int64, error)
 }
 
 func NewUserUsecase(us service.UserServiceInterface) *UserUsecase {
@@ -24,4 +26,22 @@ func (uu *UserUsecase) FindAll() ([]domain.User, error) {
 	}
 
 	return users, nil
+}
+
+func (uu *UserUsecase) FindByEmail(email string) (domain.User, error) {
+	user, err := uu.service.FindByEmail(email)
+	if err != nil {
+		return user, err
+	}
+
+	return user, err
+}
+
+func (uu *UserUsecase) Create(user domain.User) (int64, error) {
+	id, err := uu.service.Create(user)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
