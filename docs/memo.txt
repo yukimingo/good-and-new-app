@@ -4,3 +4,5 @@ eTime=True&loc=Local" up
 
 make backでバックエンドコンテナに入ってから
 migrate create -ext sql -dir migrations -seq create_users_table
+
+curl -X POST http://localhost:8080/user -H "Content-Type: application/json" -d '{"name": "test", "email": "email@example.com", "password": "pass"}'
