@@ -10,6 +10,7 @@ type TalkTopicRepository struct {
 }
 
 type TalkTopicRepositoryInterface interface {
+	FindAll() ([]domain.TalkTopic, error)
 	Create(talkTopic domain.TalkTopic) (int64, error)
 }
 
@@ -34,4 +35,23 @@ func (ttr *TalkTopicRepository) Create(talkTopic domain.TalkTopic) (int64, error
 	}
 
 	return id, nil
+}
+
+func (ttr *TalkTopicRepository) FindAll() ([]domain.TalkTopic, error) {
+	var topics []domain.TalkTopic
+	rows, err := ttr.db.Query("select * from talk_topics")
+	if err != nil {
+		return topics, err
+	}
+
+	for rows.Next() {
+		var topic domain.TalkTopic
+		if err := rows.Scan(&topic.ID, &topic.CategoryID, &topic.Title, &topic.Content, &topic.CreatedAt, &topic.UpdatedAt); err != nil {
+			return topics, err
+		}
+
+		topics = append(topics, topic)
+	}
+
+	return topics, nil
 }

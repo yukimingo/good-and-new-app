@@ -10,6 +10,7 @@ type TalkTopicService struct {
 }
 
 type TalkTopicServiceInterface interface {
+	FindAll() ([]domain.TalkTopic, error)
 	Create(talkTopic domain.TalkTopic) (int64, error)
 }
 
@@ -19,4 +20,8 @@ func NewTalkTopicService(ttr repository.TalkTopicRepositoryInterface) *TalkTopic
 
 func (tts *TalkTopicService) Create(talkTopic domain.TalkTopic) (int64, error) {
 	return tts.repository.Create(talkTopic)
+}
+
+func (tts *TalkTopicService) FindAll() ([]domain.TalkTopic, error) {
+	return tts.repository.FindAll()
 }

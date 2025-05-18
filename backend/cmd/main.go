@@ -47,6 +47,8 @@ func main() {
 
 	app.Post("/category", categoryController.Create)
 
+	app.Get("/topic", talkTopicController.FindAll)
+
 	app.Post("/topic", talkTopicController.Create)
 
 	if err := app.Listen(":8080"); err != nil {

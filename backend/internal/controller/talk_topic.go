@@ -14,6 +14,7 @@ type TalkTopicController struct {
 }
 
 type TalkTopicControllerInterface interface {
+	FindAll(c *fiber.Ctx) error
 	Create(c *fiber.Ctx) error
 }
 
@@ -35,4 +36,13 @@ func (ttc *TalkTopicController) Create(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{"id": id})
+}
+
+func (ttc *TalkTopicController) FindAll(c *fiber.Ctx) error {
+	topics, err := ttc.usecase.FindAll()
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{"topics": topics})
 }

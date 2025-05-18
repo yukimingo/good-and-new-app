@@ -10,6 +10,7 @@ type TalkTopicUsecase struct {
 }
 
 type TalkTopicUsecaseInterface interface {
+	FindAll() ([]domain.TalkTopic, error)
 	Create(talkTopic domain.TalkTopic) (int64, error)
 }
 
@@ -19,4 +20,8 @@ func NewTalkTopicUsecase(tts service.TalkTopicServiceInterface) *TalkTopicUsecas
 
 func (ttu *TalkTopicUsecase) Create(talkTopic domain.TalkTopic) (int64, error) {
 	return ttu.service.Create(talkTopic)
+}
+
+func (ttu *TalkTopicUsecase) FindAll() ([]domain.TalkTopic, error) {
+	return ttu.service.FindAll()
 }
