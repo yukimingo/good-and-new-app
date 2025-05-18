@@ -22,7 +22,7 @@ back:
 db:
 	docker container exec -it good-and-new-db-1 bash
 
-dbd:
+mysql:
 	docker compose exec db mysql -u user -p mydata
 
 migrate:
